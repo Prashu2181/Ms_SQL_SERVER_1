@@ -1,0 +1,169 @@
+create database Assignment
+
+use Assignment
+
+create table Table1
+(
+WorkerId int,
+First_name Varchar(50),
+Last_name varchar(30),
+Department Varchar(30),
+Salary int,
+Joining_date Date
+)
+
+insert into table1 values
+(1,'vipul','sharma','Admin',200000,'2024-04-15'),
+(2,'sathish','mehra','HR',150000,'2015-06-20'),
+(3,'Asha','Reddy','Admin',300000,'2013-11-01'),
+(4,'Ramesh','Kumar','Finance',120000,'2014-02-10'),
+(5, 'Sneha', 'Rao', 'HR', 180000, '2016-03-25'),
+(6, 'Mehul', 'Shah', 'IT', 500000, '2012-07-30'),
+(7, 'Neha','Joshi', 'Admin', 110000, '2014-02-28');
+
+select * from table1
+
+--1.Write an SQL query to fetch “FIRST_NAME” from Worker table using the alias name as <WORKER_NAME>.
+
+select First_name As worker_name
+from table1
+group by first_name 
+
+
+--2. Write an SQL query to fetch “FIRST_NAME” from Worker table in upper case.
+
+select upper(first_name) 
+from table1
+
+--3. Write an SQL query to fetch unique values of DEPARTMENT from Worker table.
+
+select distinct department from Table1
+
+--4. Write an SQL query to print the first three characters of FIRST_NAME from Worker table.
+
+select substring(first_name, 1, 3) as first_3_letters
+from table1
+
+--5.Write an SQL query to print the FIRST_NAME from Worker table after removing white spaces from the right side.
+
+select rtrim(First_name) as trim_name
+from Table1
+
+--6. Write an SQL query to print the DEPARTMENT from Worker table after removing white spaces from the left side.
+
+select ltrim(department) as trim_dept
+from Table1
+
+--7. Write an SQL query to print the FIRST_NAME from Worker table after replacing „a‟ with „A‟.
+
+select replace(first_name, 'a', 'A') as rename
+from Table1
+
+--8. Write an SQL query to print the FIRST_NAME and LAST_NAME from Worker table into a single columnCOMPLETE_NAME. A space char should separate them.
+
+select concat(first_name,' ',last_name) as full_name
+from Table1
+
+--9. Write an SQL query to print all Worker details from the Worker table order by FIRST_NAME Ascending.
+
+select * from table1
+order by first_name 
+
+--10. Write an SQL query to print all Worker details from the Worker table order by FIRST_NAME Ascending and DEPARTMENT Descending.
+
+select * 
+from table1
+order by first_name asc, Department desc; ---------------------------------------------------------------------------------
+
+
+--11. Write an SQL query to print details for Workers with the first name as “Vipul” and “Satish” from Worker table.
+
+select * from table1
+where first_name in ('vipul', 'sathish')
+
+
+--13. Write an SQL query to print details of Workers with DEPARTMENT name as “Admin*”.
+
+select department As Admin
+from table1
+
+--14. Write an SQL query to print details of the Workers whose FIRST_NAME ends with „a‟.
+
+select * from table1
+
+where first_name Like '%a'
+
+select * from table1 
+
+
+--15. Write an SQL query to print details of the Workers whose FIRST_NAME ends with „h‟ and contains six alphabets.
+
+select * from table1
+
+where first_name like '_____h'
+
+
+--16. Write an SQL query to print details of the Workers whose SALARY lies between 100000 and 500000.
+
+select * from table1
+
+where salary between 100000 and 500000
+
+--17. Write an SQL query to print details of the Workers who have joined in Feb‟2014.
+
+select * from table1
+
+where month(Joining_date) = 2
+    and year(Joining_date) =2014
+
+
+--18. Write an SQL query to fetch the no. of workers for each department in the descending order.
+
+select department, count(*) as No_of_workers
+from table1
+group by department
+order by No_of_workers desc
+
+--19. Write an SQL query to fetch a data to new table from another table.
+
+select * 
+into New_table 
+from Table1
+
+select * from New_table
+
+
+--20. Write an SQL query to fetch the departments that have less than 4 people in it.
+
+select department, count(*) as no_of_workers
+from table1
+group by department
+having count(*) < 3
+
+
+--21. Write an SQL query to show the last record from a table.
+
+select top 1 * from table1
+order by workerid Desc
+
+
+--22. Write an SQL query to fetch the last five records from a table.
+
+select top 5 * from table1
+order by workerid desc
+
+--23. Calculate the number of years an employee has been working for the company.
+
+select first_name, last_name,
+datediff(year, joining_date, getdate()) as years_worked
+from table1
+
+--24. Find employees who will retire in the next 5 years.----------------------------------------------
+
+
+--25. Calculate the average tenure of employees in a specific department.
+
+select department,
+avg(datediff(year, joining_date, getdate())) as avg_tenure
+from table1
+group by department
