@@ -1,0 +1,148 @@
+1.Find the second highest salary from the Employee table.
+
+SELECT MAX(salary) AS SecondHighestSalary
+FROM Employees
+WHERE salary < (SELECT MAX(salary) FROM Employees);
+
+2.- Retrieve employees who earn more than their manager.
+
+SELECT *
+FROM Employees as E
+WHERE salary > (
+   SELECT salary
+    FROM Employees
+    WHERE id = e.manager_id
+)
+
+3.- Find employees with salary greater than average salary in the entire company.
+
+SELECT *
+FROM Employees
+WHERE salary > (
+    SELECT AVG(salary)
+    FROM Employees
+)
+
+4.- Get departments with no employees.
+
+SELECT d.department_name
+FROM Departments as d
+LEFT JOIN 
+Employees as e 
+ON d.department_id = e.department_id
+WHERE e.id IS NULL;
+
+5.SELECT d.department_name
+FROM Departments as d
+LEFT JOIN 
+Employees as e 
+ON d.department_id = e.department_id
+WHERE e.id IS NULL;
+
+6.- Find the department with the lowest average salary.
+
+SELECT TOP 1 department_id, AVG(salary) AS avg_salary
+FROM Employees
+GROUP BY department_id
+ORDER BY avg_salary ASC;
+
+7.- Find customers who have not made any purchase.
+
+SELECT c.*
+FROM Customers as c
+LEFT JOIN 
+Sales as s 
+ON c.customer_id = s.customer_id
+WHERE s.sale_id IS NULL;
+
+8.- Write a query to get the first and last purchase date for each customer.
+
+SELECT customer_id,
+       MIN(purchase_date) AS FirstPurchase,
+       MAX(purchase_date) AS LastPurchase
+FROM Sales
+GROUP BY customer_id;
+
+9.- Find customers who purchased more than once in the same day.
+
+SELECT customer_id, purchase_date
+FROM Sales
+GROUP BY customer_id, purchase_date
+HAVING COUNT(*) > 1;
+
+10.- Find customers who have not made any purchase.
+
+SELECT c.*
+FROM Customers as c
+LEFT JOIN 
+Sales as s 
+ON c.customer_id = s.customer_id
+WHERE s.sale_id IS NULL;
+
+11.- Write a query to get the first and last purchase date for each customer.
+
+SELECT c.customer_id, c.name,
+       MIN(s.purchase_date) AS FirstPurchase,
+       MAX(s.purchase_date) AS LastPurchase
+FROM Customers as c
+JOIN 
+Sales as s 
+ON c.customer_id = s.customer_id
+GROUP BY c.customer_id, c.name;
+
+12.- Find products that have never been sold.
+
+SELECT *
+FROM Products
+WHERE product_id NOT IN (
+    SELECT DISTINCT product_id
+    FROM Sales
+);
+
+13.- Find products that have never been ordered.
+
+SELECT p.*
+FROM Products as p
+LEFT JOIN 
+Sales as s 
+ON p.product_id = s.product_id
+WHERE s.sale_id IS NULL;
+
+14.- Identify employees who haven’t received a salary raise in more than a year.
+
+SELECT *
+FROM Employees
+WHERE id NOT IN (
+    SELECT employee_id
+    FROM Salary_History
+    WHERE raise_date >= DATEADD(YEAR, -1, GETDATE())
+)
+
+15.- Write a query to find the employee(s) who have never received a promotion.
+
+SELECT *
+FROM Employees
+WHERE id NOT IN (
+    SELECT DISTINCT employee_id
+    FROM Promotions
+)
+
+16.- Find products that have never been ordered.
+
+SELECT p.*
+FROM Products as p
+LEFT JOIN
+ Orders as o 
+ON p.product_id = o.product_id
+WHERE o.order_id IS NULL;
+
+17.- Find employees who have worked for multiple departments over time.
+
+SELECT employee_id
+FROM Employee_Department_History
+GROUP BY employee_id
+HAVING COUNT(DISTINCT department_id) > 1;
+
+18.- Identify overlapping date ranges for bookings.------------------------
+19.- Write a query to identify overlapping shifts for employees.--------------------
+
